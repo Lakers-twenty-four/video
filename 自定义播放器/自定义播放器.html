@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        i {
+            font-style: normal;
+        }
+
+        .box {
+            position: relative;
+            width: 800px;
+            height: 538px;
+            margin: 100px auto;
+        }
+
+        video {
+            width: 80%;
+            height: 482px;
+            /* 让内容铺满整个标签 */
+            object-fit: fill;
+            background-color: yellow;
+        }
+
+        ul {
+            position: absolute;
+            right: 0px;
+            width: 160px;
+            height: 482px;
+            position: absolute;
+            right: 0px;
+            top: 0px;
+            background-color: #000;
+        }
+
+        li {
+            cursor: pointer;
+            width: 160px;
+            text-align: center;
+            height: 60px;
+            line-height: 60px;
+            list-style: none;
+            color: #fff;
+            border-bottom: 1px dashed #fff;
+        }
+
+        .control {
+            position: absolute;
+            bottom: 0px;
+            width: 800px;
+            height: 56px;
+            background-color: #000;
+        }
+
+        @font-face {
+            font-family: 'iconfont';
+            src: url('./font/iconfont.eot');
+            src: url('./font/iconfont.eot?#iefix') format('embedded-opentype'),
+            url('./font/iconfont.woff') format('woff'),
+            url('./font/iconfont.ttf') format('truetype'),
+            url('./font/iconfont.svg#iconfont') format('svg');
+        }
+
+        .iconfont {
+            position: absolute;
+            top: 6px;
+            left: 12px;
+            cursor: pointer;
+            font-family: "iconfont" !important;
+            font-size: 40px;
+            color: #fff;
+        }
+
+        .proRange {
+            cursor: pointer;
+            position: absolute;
+            bottom: 18px;
+            left: 68px;
+            width: 570px;
+        }
+
+        .voiceBox {
+            position: absolute;
+            bottom: 54px;
+            right: 104px;
+        }
+
+        .controlVoice {
+            cursor: pointer;
+            position: absolute;
+            top: -74px;
+            left: -36px;
+            transform: rotate(-90deg);
+        }
+
+        .hide {
+            display: none;
+        }
+
+        .curr {
+            color: #0094FF;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="box">
+        <video src="./video/蜡笔小新.mp4"></video>
+        <ul>
+            <li data-src="./video/蜡笔小新.mp4" class="curr">蜡笔小新</li>
+            <li data-src="./video/猫和老鼠.mp4">猫和老鼠</li>
+            <li data-src="./video/爆笑虫子.mp4">爆笑虫子</li>
+        </ul>
+        <div class="control">
+            <i class="iconfont" id="playBtn">&#xe650;</i>
+            <i class="iconfont hide" id="stopBtn">&#xe66b;</i>
+        </div>
+        <input type="range" class="proRange" id="proRange" min=0 value=0 step="1">
+        <div class="voiceBox">
+            <i class="iconfont voiceIcon" id="voiceIcon">&#xe672;</i>
+            <input type="range" class="controlVoice hide" id="controlVoice" min=0 value=0.5 max=1 step="0.1">
+        </div>
+    </div>
+</body>
+<script>
+    window.onload = function () {
+        var playBtn = document.getElementById("playBtn");
+        var stopBtn = document.getElementById("stopBtn");
+        var proRange = document.getElementById("proRange");
+        var video = document.getElementsByTagName("video")[0];
+        var voiceIcon = document.getElementById("voiceIcon");
+        var controlVoice = document.getElementById("controlVoice");
+        var list = document.querySelectorAll("li");
+
+        // console.log(list);
+
+        //1、为播放按钮注册点击事件
+        playBtn.onclick = function () {
+            this.classList.add("hide");
+            stopBtn.classList.remove("hide");
+            console.log(video);
+            //播放视频
+            video.play();
+        }
+
+        //2、为暂停按钮注册点击事件
+        stopBtn.onclick = function () {
+            this.classList.add("hide");
+            playBtn.classList.remove("hide");
+            //暂停视频
+            video.pause();
+        }
+
+
+        //视频加载完毕
+        video.oncanplay = function () {
+            proRange.max = video.duration;
+        }
+        //3、进度条
+        //视频播放的每一分每一秒都对进度条进行该改变
+        //timeuplate(播放时-持续触发)
+        video.ontimeupdate = function () {
+            //获取视频的当前播放进度 => 进度条按钮
+            proRange.value = video.currentTime;
+            //currentTime--当前播放进度
+        }
+
+        //3.1 为进度条注册点击事件
+        // oninput--当输入值的时候触发
+        // onchange--当鼠标弹起的时候才触发，无法实时
+        proRange.oninput = function () {
+            video.currentTime = proRange.value;
+        }
+
+        //4、点击显示音量图标
+        //切换显示，音量按钮
+        voiceIcon.onclick = function () {
+            //dom.classList.toggle('className') 切换
+            controlVoice.classList.toggle("hide");
+        }
+
+        //4.1、调整音量大小
+        //绑定oninput事件
+        controlVoice.oninput = function () {
+            //把按钮的值赋给视频的音量
+            video.volume = this.value;
+        }
+
+
+        //5、循环绑定点击事件
+        //当点击谁的时候，获取它的自定义属性  data-src   src=>video.src
+        for (var i = 0; i < list.length; i++) {
+            var ele = list[i];
+            console.log(ele);
+            ele.onclick = function () {
+
+                for (var j = 0; j < list.length; j++) {
+                    if (list[j].classList.contains("curr")) {
+                        list[j].classList.remove("curr");
+                    }
+                }
+
+                this.classList.add("curr");
+
+                //获取被点击的li标签的src属性
+                var src = this.dataset.src;
+                //赋值给video标签的src属性
+                video.src = src;
+
+                video.currentTime = 0;
+                //视频加载完毕
+                video.oncanplay = function () {
+                    proRange.max = video.duration;
+
+                }
+                video.play();
+                playBtn.classList.add("hide");
+                stopBtn.classList.remove("hide");
+            }
+        }
+    }
+</script>
+
+</html>
