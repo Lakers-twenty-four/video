@@ -20,7 +20,19 @@
 
 支持的格式
 
+| 格式 | MIME-type  |
+| ---- | ---------- |
+| MP3  | audio/mpeg |
+| Ogg  | audio/ogg  |
+| Wav  | audio/wav  |
+
 **video**常见属性、方法、事件
+
+| 属性                     | 方法       | 事件                          |
+| ------------------------ | ---------- | ----------------------------- |
+| duration  视频播放时长   | play 播放  | canplay 视频加载完毕 准备播放 |
+| currentTime 当前播放进度 | pause 暂停 | timeupdate 播放时-持续触发    |
+| volume 音量大小          |            |                               |
 
 **source**标签
 
@@ -58,6 +70,15 @@ video {
 
 `<video src="小猪佩奇.mp4" autoplay controls ></video>`
 
+| 属性     | 值       | 描述                                                         |
+| -------- | -------- | ------------------------------------------------------------ |
+| autoplay | autoplay | 如果出现该属性，则音频在就绪后马上播放。                     |
+| controls | controls | 如果出现该属性，则向用户显示控件，比如播放按钮。             |
+| loop     | loop     | 如果出现该属性，则每当音频结束时重新开始播放。               |
+| muted    | muted    | 规定视频输出应该被静音。                                     |
+| preload  | preload  | 如果出现该属性，则音频在页面加载时进行加载，并预备播放。如果使用 "autoplay"，则忽略该属性。 |
+| src      | *url*    | 要播放的音频的 URL。                                         |
+
 ## 1.3  dom对象
 
 以下属性，是提供给js的dom对象使用的，如，获取视频的长度**duration**
@@ -69,11 +90,75 @@ var video=document.querySelector("video");
   var duration=video.duration;
 ```
 
+| 属性                | 描述                                                |
+| ------------------- | --------------------------------------------------- |
+| audioTracks         | 返回表示可用音频轨道的 AudioTrackList 对象。        |
+| autoplay            | 设置或返回是否在就绪（加载完成）后随即播放音频。    |
+| buffered            | 返回表示音频已缓冲部分的 TimeRanges 对象。          |
+| controller          | 返回表示音频当前媒体控制器的 MediaController 对象。 |
+| controls            | 设置或返回音频是否应该显示控件（比如播放/暂停等）。 |
+| crossOrigin         | 设置或返回音频的 CORS 设置。                        |
+| currentSrc          | 返回当前音频的 URL。                                |
+| currentTime         | 设置或返回音频中的当前播放位置（以秒计）。          |
+| defaultMuted        | 设置或返回音频默认是否静音。                        |
+| defaultPlaybackRate | 设置或返回音频的默认播放速度。                      |
+| duration            | 返回音频的长度（以秒计）。                          |
+| ended               | 返回音频的播放是否已结束。                          |
+| error               | 返回表示音频错误状态的 MediaError 对象。            |
+| loop                | 设置或返回音频是否应在结束时再次播放。              |
+| mediaGroup          | 设置或返回音频所属媒介组合的名称。                  |
+| muted               | 设置或返回是否关闭声音。                            |
+| networkState        | 返回音频的当前网络状态。                            |
+| paused              | 设置或返回音频是否暂停。                            |
+| playbackRate        | 设置或返回音频播放的速度。                          |
+| played              | 返回表示音频已播放部分的 TimeRanges 对象。          |
+| preload             | 设置或返回音频的 preload 属性的值。                 |
+| readyState          | 返回音频当前的就绪状态。                            |
+| seekable            | 返回表示音频可寻址部分的 TimeRanges 对象。          |
+| seeking             | 返回用户当前是否正在音频中进行查找。                |
+| src                 | 设置或返回音频的 src 属性的值。                     |
+| textTracks          | 返回表示可用文本轨道的 TextTrackList 对象。         |
+| volume              | 设置或返回音频的音量。  
+
 ## 1.4  dom对象的方法
+
+| 方法           | 描述                                       |
+| -------------- | ------------------------------------------ |
+| addTextTrack() | 向音频添加新的文本轨道。                   |
+| canPlayType()  | 检查浏览器是否能够播放指定的音频类型。     |
+| fastSeek()     | 在音频播放器中指定播放时间。               |
+| getStartDate() | 返回新的 Date 对象，表示当前时间线偏移量。 |
+| load()         | 重新加载音频元素。                         |
+| play()         | 开始播放音频。                             |
+| pause()        | 暂停当前播放的音频。                       |
 
 ## 1.5  dom对象的事件
 
-
+| 属性               | 值       | 描述                                                         |
+| ------------------ | -------- | ------------------------------------------------------------ |
+| onabort            | *script* | 当发生中止事件时运行脚本                                     |
+| oncanplay          | *script* | 当媒介能够开始播放但可能因缓冲而需要停止时运行脚本           |
+| oncanplaythrough   | *script* | 当媒介能够无需因缓冲而停止即可播放至结尾时运行脚本           |
+| ondurationchange   | *script* | 当媒介长度改变时运行脚本                                     |
+| onemptied          | *script* | 当媒介资源元素突然为空时（网络错误、加载错误等）运行脚本     |
+| onended            | *script* | 当媒介已抵达结尾时运行脚本                                   |
+| onerror            | *script* | 当在元素加载期间发生错误时运行脚本                           |
+| onloadeddata       | *script* | 当加载媒介数据时运行脚本                                     |
+| onloadedmetadata   | *script* | 当媒介元素的持续时间以及其他媒介数据已加载时运行脚本         |
+| onloadstart        | *script* | 当浏览器开始加载媒介数据时运行脚本                           |
+| onpause            | *script* | 当媒介数据暂停时运行脚本                                     |
+| onplay             | *script* | 当媒介数据将要开始播放时运行脚本                             |
+| onplaying          | *script* | 当媒介数据已开始播放时运行脚本                               |
+| onprogress         | *script* | 当浏览器正在取媒介数据时运行脚本                             |
+| onratechange       | *script* | 当媒介数据的播放速率改变时运行脚本                           |
+| onreadystatechange | *script* | 当就绪状态（ready-state）改变时运行脚本                      |
+| onseeked           | *script* | 当媒介元素的定位属性 [1] 不再为真且定位已结束时运行脚本      |
+| onseeking          | *script* | 当媒介元素的定位属性为真且定位已开始时运行脚本               |
+| onstalled          | *script* | 当取回媒介数据过程中（延迟）存在错误时运行脚本               |
+| onsuspend          | *script* | 当浏览器已在取媒介数据但在取回整个媒介文件之前停止时运行脚本 |
+| ontimeupdate       | *script* | 当媒介改变其播放位置时运行脚本                               |
+| onvolumechange     | *script* | 当媒介改变音量亦或当音量被设置为静音时运行脚本               |
+| onwaiting          | *script* | 当媒介已停止播放但打算继续播放时运行脚本                     |
 
 # 2、video.js
 
