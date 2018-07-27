@@ -1,5 +1,17 @@
 # video.js
 
+目录：
+
+[1、h5多媒体标签--video](#1h5多媒体标签)
+
+[2、video.js](#2videojs)
+
+[3、小项目](#3小项目)
+
+​	[3.1 自定义播放器](#31--自定义播放器)
+
+​	[3.2 video.js简单项目](#32--videojs简单项目)
+
 # 1、h5多媒体标签--video
 
 使用
@@ -228,7 +240,7 @@ controlVoice.oninput = function () {
        范围标签 => 不要使用 input:range  而是 自己使用div 封装进度条
        以上可以实现 但是 很繁琐
 
-5.使用插件 video.js 可以达到最开始的目的
+   5.使用插件 video.js 可以达到最开始的目的
 
 功能齐全，样式一致！
 
